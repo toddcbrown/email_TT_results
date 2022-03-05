@@ -1,7 +1,4 @@
 def email(df,lastTT,compare_TT=None):
-  import pandas as pd
-  import convert
-  print(df.head())
   """
   **Must use following columns in df
   ['Name','Last','email_rider','email_parent','Cat', 'May_21','June_21','July_21','Aug_21','May_22','June_22','July_22','Aug_22']
@@ -12,7 +9,7 @@ def email(df,lastTT,compare_TT=None):
   todays_mean = convert.sec_to_min(
     np.mean(
       lastTT.apply(
-        convert.conv_to_sec.loc[lastTT.apply(conv_to_sec) > 0]))
+        convert.conv_to_sec.loc[lastTT.apply(conv_to_sec) > 0])))
   for i in df.index:
     Name = df['Name'].iloc[i]
     recepient_rider = df['email_parent'].iloc[i]

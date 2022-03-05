@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import yagmail 
 import convert
+import email_
 #import email
 
 
@@ -21,4 +22,4 @@ print(convert.sec_to_min(np.mean(find_mean)))
 
 
 
-email(df,df['July_22'])
+email_(df,df['July_22'])
