@@ -2,6 +2,7 @@ import yagmail
 import convert
 import numpy as np
 import pandas as pd
+import time
 def email(df,lastTT,compare_TT=None):
   """
   **Must use following columns in df
@@ -9,15 +10,15 @@ def email(df,lastTT,compare_TT=None):
   """
   lastTT = lastTT.replace(['',np.nan,'DNF','nan'],int(0))
   sender = 'skyridge.mtb.tt.results@gmail.com'
-  password = 'uqrs dxjs vpos ixcw'
+  password = 'spfb fmbe rmqp etmy'
   yag = yagmail.SMTP(user=sender,password=password)
   todays_mean = convert.mean_tt_time([i for i in lastTT if i != 0])
   for i in df.index:
     Name = df['Name'].iloc[i]
-    recepient_rider = 'reltudukki@vusra.com'#df['email_parent'].iloc[i]
-    print(recepient_rider)
-    recepient_parent = 'reltudukki@vusra.com'#df['email_parent'].iloc[i]
-    print(recepient_parent)
+    recepient_rider = 'jalebif429@shopxda.com'#df['email_parent'].iloc[i]
+    #print(recepient_rider)
+    recepient_parent = 'jalebif429@shopxda.com'#df['email_parent'].iloc[i]
+    #print(recepient_parent)
     subject = "Skyridge Junior Devo MTB Team | %s TT Results"%(Name)
     contents = """%s's TT results are:\n-----------
     MAY 2021: %s
@@ -72,7 +73,7 @@ def email(df,lastTT,compare_TT=None):
                    df['June_22'].iloc[i],
                    df['July_22'].iloc[i],
                    df['Aug_22'].iloc[i])
-    
+
     try:
       yag.send(to=recepient_rider,subject=subject,contents=contents_rider)
     except:
@@ -82,3 +83,6 @@ def email(df,lastTT,compare_TT=None):
     except:
       print(Name + ' parent email failed')
     print('.')
+    
+    #TIME DELAY TO AALLOW BULK MESSAGE SENDING
+    time.sleep(15)
