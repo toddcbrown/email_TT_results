@@ -7,20 +7,18 @@ def email(df,lastTT,compare_TT=None):
   **Must use following columns in df
   ['Name','Last','email_rider','email_parent','Cat', 'May_21','June_21','July_21','Aug_21','May_22','June_22','July_22','Aug_22']
   """
-  df = df.replace('',int(0))
+  lastTT = lastTT.replace(['',np.nan,'DNF','nan'],int(0))
   sender = 'skyridge.mtb.tt.results@gmail.com'
   password = 'uqrs dxjs vpos ixcw'
   yag = yagmail.SMTP(user=sender,password=password)
   todays_mean = convert.mean_tt_time([i for i in lastTT if i != 0])
   for i in df.index:
     Name = df['Name'].iloc[i]
-    recepient_rider = df['email_parent'].iloc[i]
-    recepient_parent = df['email_parent'].iloc[i]
+    recepient_rider = 'reltudukki@vusra.com'#df['email_parent'].iloc[i]
+    print(recepient_rider)
+    recepient_parent = 'reltudukki@vusra.com'#df['email_parent'].iloc[i]
+    print(recepient_parent)
     subject = "Skyridge Junior Devo MTB Team | %s TT Results"%(Name)
-    Name = df['Name'].iloc[i]
-    recepient_rider = df['email_rider'].iloc[i]
-    recepient_parent = df['email_parent'].iloc[i]
-    subject = "Skyridge JD MTB Team | %s TT Results"%(Name)
     contents = """%s's TT results are:\n-----------
     MAY 2021: %s
     JUNE 2021: %s
