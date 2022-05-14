@@ -1,7 +1,6 @@
 import pandas as pd
-import numpy as np
 import email_
 
-df = pd.read_csv('7th_tt_times.csv')
+df = pd.read_csv('22_Roster_JD_TT.csv')
 
-email_.email(df[:5],df['May_21'])
+email_.email(df,df['May_21'],test_email='temego6968@roxoas.com')

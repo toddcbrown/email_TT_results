@@ -1,0 +1,14 @@
+%s's TT results are:
+
+    MAY 2022: %s
+    JUNE 2022: %s
+    JULY 2022: %s
+    AUG 2022: %s
+
+<hr>The following is for your FYI, you can choose wether to share it with your child:
+    Today's average time was <b>%s</b>.
+<hr>If you believe this is incorrect please text me at (801)669-2560.These results are weighed heavily on deciding practice groups. 
+    Time trials can be made up using <a href="https://www.strava.com/segments/15283565"> this Strava Segment</a>. Please notify a coach if you decide to do this. Also we will add 4 percent to the time because it does not cover the full loop.
+    
+    Thanks!
+    Coach Todd

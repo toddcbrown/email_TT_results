@@ -21,6 +21,7 @@ def conv_to_sec(x):
     sec = int(j[0])*60*60 + int(j[1])*60 + round(float(j[2]))
     return int(sec)
 
+
 def mean_tt_time(x):
   """
   x: a list of string times 

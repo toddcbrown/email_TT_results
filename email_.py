@@ -3,44 +3,49 @@ import convert
 import numpy as np
 import pandas as pd
 import time
-def email(df,lastTT,compare_TT=None):
+def email(df,lastTT,test_email=None):
   """
   **Must use following columns in df
   ['Name','Last','email_rider','email_parent','Cat', 'May_21','June_21','July_21','Aug_21','May_22','June_22','July_22','Aug_22']
   """
+  #lastTT is the "current TT that you want statistics on"
   lastTT = lastTT.replace(['',np.nan,'DNF','nan'],int(0))
+  lastTT = [convert.conv_to_sec(x) for x in lastTT]
+  todays_mean = np.mean([x for x in lastTT if x != 0])
+  todays_mean = convert.sec_to_min(todays_mean)
+  #replace NaN with "no result"
+  df = df.replace(['',np.nan,'DNF','nan'],'no result')
+  #Prime yagmail 
   sender = 'skyridge.mtb.tt.results@gmail.com'
   password = 'spfb fmbe rmqp etmy'
   yag = yagmail.SMTP(user=sender,password=password)
-  todays_mean = convert.mean_tt_time([i for i in lastTT if i != 0])
+
+  #Go through each line and send email 
   for i in df.index:
     Name = df['Name'].iloc[i]
-    recepient_rider = 'jalebif429@shopxda.com'#df['email_parent'].iloc[i]
-    #print(recepient_rider)
-    recepient_parent = 'jalebif429@shopxda.com'#df['email_parent'].iloc[i]
-    #print(recepient_parent)
+    #Allow for testing 
+    if test_email is None:
+      recepient_rider=print('email protected with#') #df['email_rider'].iloc[i]
+      recepient_parent =print('email protected with#')#df['email_parent'].iloc[i]
+    else:
+      recepient_rider=test_email
+      recepient_parent=test_email 
+    
     subject = "Skyridge Junior Devo MTB Team | %s TT Results"%(Name)
-    contents = """%s's TT results are:\n-----------
-    MAY 2021: %s
-    JUNE 2021: %s
-    JULY 2021: %s
-    AUG 2021: %s
-
-    MAY 2022: %s
-    JUNE 2022: %s
-    JULY 2022: %s
-    AUG 2022: %s
-
-    If you believe this is incorrect please text me at (801)669-2560.
-    These results are weighed heavily on deciding practice groups. \n\n
-    Time trials can be made up using <a href="https://www.strava.com/segments/15283565"> this Strava segment</a>. Please notify a coach if you decide to do this. Also we will add 4 percent to the time because it does not cover the full loop.
-    
-    --------------
-    The following is for your FYI, you can choose wether to share it with your child:
-    Today's average time was %s.
-    
-    Thanks!
-    Coach Todd"""%(Name,
+    category = df['Cat'][i]
+    if category == '8 Male' or category == '8 Female':
+      
+      contents = open('parent8th.txt','r').read()%(Name,
+                     df['May_21'].iloc[i],
+                     df['June_21'].iloc[i],
+                     df['July_21'].iloc[i],
+                     df['Aug_21'].iloc[i],
+                     df['May_22'].iloc[i],
+                     df['June_22'].iloc[i],
+                     df['July_22'].iloc[i],
+                     df['Aug_22'].iloc[i],
+                     todays_mean)
+      contents_rider = open('rider8th.txt','r').read()%(
                    df['May_21'].iloc[i],
                    df['June_21'].iloc[i],
                    df['July_21'].iloc[i],
@@ -48,27 +53,15 @@ def email(df,lastTT,compare_TT=None):
                    df['May_22'].iloc[i],
                    df['June_22'].iloc[i],
                    df['July_22'].iloc[i],
-                   df['Aug_22'].iloc[i],
-                   todays_mean)
-    
-    contents_rider = """Your TT results are:\n-----------
-    MAY 2021: %s
-    JUNE 2021: %s
-    JULY 2021: %s
-    AUG 2021: %s
-
-    MAY 2022: %s
-    JUNE 2022: %s
-    JULY 2022: %s
-    AUG 2022: %s
-
-     
-    Thanks!
-    Coach Todd"""%(
-                   df['May_21'].iloc[i],
-                   df['June_21'].iloc[i],
-                   df['July_21'].iloc[i],
-                   df['Aug_21'].iloc[i],
+                   df['Aug_22'].iloc[i])  
+    else:
+      contents = open('parent7th.txt','r').read()%(Name,
+                     df['May_22'].iloc[i],
+                     df['June_22'].iloc[i],
+                     df['July_22'].iloc[i],
+                     df['Aug_22'].iloc[i],
+                     todays_mean)
+      contents_rider = open('rider7th.txt','r').read()%(
                    df['May_22'].iloc[i],
                    df['June_22'].iloc[i],
                    df['July_22'].iloc[i],
@@ -82,7 +75,7 @@ def email(df,lastTT,compare_TT=None):
       yag.send(to=recepient_parent,subject=subject,contents=contents)
     except:
       print(Name + ' parent email failed')
-    print('.')
+    print(Name+' email sent')
     
-    #TIME DELAY TO AALLOW BULK MESSAGE SENDING
+    #TIME DELAY TO ALLOW BULK MESSAGE SENDING
     time.sleep(15)
